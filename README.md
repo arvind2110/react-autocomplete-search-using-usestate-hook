@@ -3,6 +3,7 @@ This is a sample application to create reusable auto-complete feature using belo
 * Using Webpacka and Babel for project setup
 * React useState Hook
 * React Context API
+* Created custom hook : useDebounce to avoid multiple API calls on each key press
 * Passing props to child component from parent component and vice-versa
 * React Bootstarp for UI designing
 * ErrorBoundry using react-error-boundary package

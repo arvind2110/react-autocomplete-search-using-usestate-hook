@@ -3,6 +3,7 @@ import React, { memo, useContext, useEffect, useState } from "react";
 import AutoCompleteContext from "../Context/AutoCompleteContext";
 import AutoCompleteSuggestionsContext from "../Context/AutoCompleteSuggestionsContext";
 import ModalContext from "../../Common/Modal/Context/ModalContext";
+import useDebaounce from "../../Common/Hooks/useDebounce";
 
 const AutoCompleteSuggestions = ({ searchText, setSearchText }) => {
     const { showBoundary } = useErrorBoundary();
@@ -12,9 +13,11 @@ const AutoCompleteSuggestions = ({ searchText, setSearchText }) => {
     const [suggestions, setSuggestions] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
 
+    const debounceSearchText = useDebaounce(searchText, 500);
+
     useEffect(() => {
         setIsLoading(true);
-        fetch(getUrl(searchText)).then((response) => {
+        fetch(getUrl(debounceSearchText)).then((response) => {
             return response.json();
         }).then((response) => {
             setSuggestions(response);
@@ -23,7 +26,7 @@ const AutoCompleteSuggestions = ({ searchText, setSearchText }) => {
         }).finally(() => {
             setIsLoading(false);
         })
-    }, [searchText, getUrl, showBoundary]);
+    }, [debounceSearchText, getUrl, showBoundary]);
     
     const showItem = (itemId) => {
         setSearchText("");
